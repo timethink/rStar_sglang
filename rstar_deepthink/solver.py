@@ -9,7 +9,7 @@ from tqdm import tqdm
 from termcolor import colored
 from functools import partial
 from vllm import LLM, SamplingParams
-from vllm.outputs import RequestOutput
+from vllm.outputs import RequestOutput, CompletionOutput
 from pebble import ProcessPool
 from omegaconf import DictConfig, OmegaConf
 from typing import Optional, Any, Dict, List, Callable, Type, Tuple
@@ -20,6 +20,67 @@ from .llms.llms import llm_generate, rm_generate
 from .llms.llm_engine import llm_engine, rm_engine
 from .constants import TIMEOUT_SECONDS, ERROR_COLOR
 
+#添加output转换函数
+def transform_sglang_to_vllm(prompts, outputs, config) -> List[RequestOutput]:
+
+    n_sample = config.n_generate_sample#每个prompt生成的样本数,需要将n_sample个样本合并为一个
+    
+    if len(prompts) * n_sample != len(outputs):
+        raise ValueError("The number of prompts and outputs does not match.")
+    new_request_outputs = []
+    i = 0
+    for prompt in prompts:
+        completion_outputs = []
+        request_id = str(i)
+        request_prompt = prompt
+        
+        finished = True
+        for j in range(n_sample):
+            output = outputs[i*n_sample+j]
+            if j == 0:
+                num_cached_tokens = output["meta_info"]["cached_tokens"]
+                prompt_len = output["meta_info"]["prompt_tokens"]
+                #填充一个长度为prompt_len的list
+                request_prompt_token_ids = [0] * prompt_len
+            completion_index = j
+            completion_text = output["text"]
+            #token_ids暂时随便填充
+            completion_token_num = output["meta_info"]["completion_tokens"]
+            completion_token_ids = [0] * completion_token_num
+            completion_finish_reason = output["meta_info"]["finish_reason"]["type"]
+            #如果没有matched字段，则将stop_reason设置为\n</code>
+            if "matched" not in output["meta_info"]["finish_reason"]:
+                completion_stop_reason = '\n</code>'
+            else:
+                completion_stop_reason = output["meta_info"]["finish_reason"]["matched"]
+            #completion_stop_reason = '\n</code>'
+            new_completion_output = CompletionOutput(
+                    index=completion_index,
+                    text=completion_text,
+                    token_ids=completion_token_ids,
+                    cumulative_logprob=-1,#暂时填充
+                    logprobs=None,
+                    finish_reason=completion_finish_reason,
+                    stop_reason=completion_stop_reason,
+                    lora_request=None
+            )
+            completion_outputs.append(new_completion_output)
+        new_request_output = RequestOutput(
+            request_id=request_id,
+            prompt=request_prompt,
+            prompt_token_ids=request_prompt_token_ids,
+            prompt_logprobs=None,
+            outputs=completion_outputs,
+            finished=finished,
+            metrics=None,
+            lora_request=None,
+            encoder_prompt=None,
+            encoder_prompt_token_ids=None,
+            num_cached_tokens=num_cached_tokens
+        )
+        new_request_outputs.append(new_request_output)
+        i += 1
+    return new_request_outputs
 
 class Solver(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -230,17 +291,35 @@ class Solver(BaseModel):
                 print("-----------------Current Rollout: ", rollout, "-----------------")
                 print("-----------------Current Step: ", step, "-----------------")
                 prompts, prompts_span, valid_agents, invalid_agents, expanded_agents, valid_rewards = self.generate_preprocess(agents)
+
+                #将valid_rewards保存到文件
+                with open('valid_rewards.txt', 'w') as f:
+                    f.write(str(valid_rewards))
                 
                 if len(valid_agents + expanded_agents) < 1:
                     break
                 
                 # step expansion
                 outputs = self.llm(prompts, self.generate_sampling_params)
-                
+                #将outputs保存到文件
+                with open('outputs.txt', 'w') as f:
+                    f.write(str(outputs))
+
+                if self.config.run_tool == "sglang":#添加output转换
+                #将sglang的outputs重构为vllm的outputs
+                    new_outputs = transform_sglang_to_vllm(prompts,outputs,self.config)
+                else:
+                    new_outputs = outputs
+
+                outputs = new_outputs
+
                 for output, reward in zip(outputs, valid_rewards): # attach reward to prevent repeat rewarding
                     output.value_estimate = reward
+
                 reconstructed_outputs = [outputs[bos_idx : eos_idx] for bos_idx, eos_idx in zip(prompts_span, prompts_span[1:])]
-                
+                #将reconstructed_outputs保存到文件
+                with open('reconstructed_outputs.txt', 'w') as f:
+                    f.write(str(reconstructed_outputs))
                 # process output and run python code
                 valid_agents = self.generate_postprocess(reconstructed_outputs, valid_agents)
 
@@ -248,6 +327,8 @@ class Solver(BaseModel):
                 prompts, prompts_span = self.value_preprocess(valid_agents)
                 if self.need_value_func:
                     outputs = self.reward_model(prompts=prompts)
+                    with open ('value_outputs.txt', 'w') as f:
+                        f.write(str(outputs))
                     reconstructed_outputs = [outputs[bos_idx : eos_idx] for bos_idx, eos_idx in zip(prompts_span, prompts_span[1:])]
                 else:
                     reconstructed_outputs = [None] * (len(prompts_span) - 1)
@@ -261,7 +342,6 @@ class Solver(BaseModel):
 
             # Save agents internal rollouts
             self.save_intermediate_rollouts(saved_jsonl_file, cur_data, agents, rollout)
-            
         return self.output(agents)
     
     

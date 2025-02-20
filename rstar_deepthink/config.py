@@ -165,3 +165,9 @@ class BaseConfig:
     save_intermediate_rollouts: bool = field(
         default=True, metadata={"help": "save intermediate rollouts in ./rollout"}
     )
+    run_tool: Optional[str] = field(
+        default="vllm", metadata={"help": "run vllm or sglang"}
+    )
+    enable_prefix_caching: bool = field(
+        default=False, metadata={"help": "enable prefix caching in vllm"}
+    )

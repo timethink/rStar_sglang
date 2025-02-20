@@ -17,7 +17,8 @@ def llm_generate(
 ):
     if not prompts: return []
     outputs = engine.generate(prompts, sampling_params=sampling_params)   
-     
+    #暂时先去掉这段代码
+    """
     # remove duplicate outputs
     for output in outputs:
         outs = output.outputs
@@ -42,6 +43,7 @@ def llm_generate(
             output.outputs = end_ans[:1]
         else:
             output.outputs = other_ans
+    """
     return outputs
 
 

@@ -20,3 +20,5 @@ need_value_func: False
 batch_size: 5000
 num_few_shot: 0
 max_model_len: 4096
+run_tool: vllm
+enable_prefix_caching: True

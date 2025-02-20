@@ -1,0 +1,14 @@
+process error 'ground_truth'
+process error 'ground_truth'
+252 385 Pass 1 : 0.6545454545454545
+Pass n : 0.6545454545454545
+process error 'ground_truth'
+253 385 Pass 1 : 0.6571428571428571
+Pass n : 0.6571428571428571
+process error 'ground_truth'
+256 385 Pass 1 : 0.6649350649350649
+Pass n : 0.6649350649350649
+process error 'ground_truth'
+process error 'ground_truth'
+252 385 Pass 1 : 0.6545454545454545
+Pass n : 0.6545454545454545

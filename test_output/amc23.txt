@@ -1,0 +1,12 @@
+18 40 Pass 1 : 0.45
+Pass n : 0.45
+17 40 Pass 1 : 0.425
+Pass n : 0.425
+16 40 Pass 1 : 0.4
+Pass n : 0.4
+process error 'ground_truth'
+20 40 Pass 1 : 0.5
+Pass n : 0.5
+process error 'ground_truth'
+20 40 Pass 1 : 0.5
+Pass n : 0.5

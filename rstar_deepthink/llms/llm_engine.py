@@ -5,31 +5,58 @@ import torch
 from rstar_deepthink.llms.rm import *
 from transformers import AutoConfig, AutoTokenizer
 from vllm import LLM, SamplingParams
-
+import sglang as sgl
 def llm_init(config):
-    llm = LLM(
-        model=config.model_dir, 
-        tensor_parallel_size=config.tp, 
-        trust_remote_code=True,
-        seed=config.seed if config.seed else 0,
-        swap_space=config.swap_space,
-        max_model_len=config.max_model_len,
-        gpu_memory_utilization=config.llm_gpu_memory_utilization,
-        enforce_eager=True,
-        distributed_executor_backend='ray' if config.tp > 1 else None,
-        dtype="bfloat16",
-    )
-    sampling_params = SamplingParams(
-        temperature=config.temperature,
-        top_k=config.top_k,
-        top_p=config.top_p,
-        best_of=config.best_of,
-        max_tokens=config.max_tokens, 
-        n=config.n_generate_sample,
-        stop=config.stop,
-        skip_special_tokens=False,
-        seed=config.seed if config.temperature == 0 else None, # vllm0.6.6.post1 
-    )
+    if config.run_tool == "vllm":
+        llm = LLM(
+            model=config.model_dir, 
+            tensor_parallel_size=config.tp, 
+            trust_remote_code=True,
+            seed=config.seed if config.seed else 0,
+            swap_space=config.swap_space,
+            max_model_len=config.max_model_len,
+            gpu_memory_utilization=config.llm_gpu_memory_utilization,
+            enforce_eager=True,
+            distributed_executor_backend='ray' if config.tp > 1 else None,
+            dtype="bfloat16",
+            enable_prefix_caching=config.enable_prefix_caching,
+        )
+        sampling_params = SamplingParams(
+            temperature=config.temperature,
+            top_k=config.top_k,
+            top_p=config.top_p,
+            best_of=config.best_of,
+            max_tokens=config.max_tokens, 
+            n=config.n_generate_sample,
+            stop=config.stop,
+            skip_special_tokens=False,
+            seed=config.seed if config.temperature == 0 else None, # vllm0.6.6.post1 
+        )
+    elif config.run_tool == "sglang":
+        llm = sgl.Engine(#sglang设置
+            model_path=config.model_dir, 
+            tp_size=config.tp, 
+            trust_remote_code=True,
+            random_seed=config.seed if config.seed else 0,
+            #swap_space=config.swap_space,
+            context_length = config.max_model_len,
+            dtype="bfloat16",
+            disable_radix_cache=(not config.enable_prefix_caching),
+            allow_auto_truncate = True,
+            #enable_metrics = True
+            #disable_log_stats=config.disable_log_stats,#控制是否打印日志
+        )
+        sampling_params = {#sglang设置
+            "temperature": config.temperature,
+            "top_k": config.top_k,
+            "top_p": config.top_p,
+            #"best_of": config.best_of,
+            "max_new_tokens": config.max_tokens,
+            "n": config.n_generate_sample,
+            "stop": config.stop,
+            "skip_special_tokens": False,
+            #"logprobs": True
+        }
     return llm, sampling_params
 
 def llm_engine(config):

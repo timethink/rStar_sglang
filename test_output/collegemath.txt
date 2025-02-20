@@ -1,0 +1,141 @@
+process error 'ground_truth'
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+1467 2818 Pass 1 : 0.5205819730305181
+Pass n : 0.5205819730305181
+process error 'ground_truth'
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+1467 2818 Pass 1 : 0.5205819730305181
+Pass n : 0.5205819730305181
+process error 'ground_truth'
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+1483 2818 Pass 1 : 0.5262597586941093
+Pass n : 0.5262597586941093
+process error 'ground_truth'
+process error 'ground_truth'
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error 'ground_truth'
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+process error [Errno Task timeout] 120
+1460 2818 Pass 1 : 0.518097941802697
+Pass n : 0.518097941802697

@@ -14,7 +14,7 @@ n_generate_sample: 32
 best_of: 32
 is_sampling: False
 iterations: 12
-max_tokens: 2048
+max_tokens: 4096
 need_value_func: True
 batch_size: 8000
 num_few_shot: 0
